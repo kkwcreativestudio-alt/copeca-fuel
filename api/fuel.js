@@ -3,10 +3,15 @@ export default async function handler(req, res) {
     const response = await fetch("https://airnav.com/airport/TJBQ/COPECA");
     const html = await response.text();
 
-    // Better pattern based on table structure
-    const match = html.match(/Jet A Full service[\s\S]*?\$([0-9]+\.[0-9]+)/i);
+    let price = "N/A";
 
-    const price = match ? match[1] : "N/A";
+    // Find all price values like $6.35
+    const priceMatches = [...html.matchAll(/\$([0-9]+\.[0-9]+)/g)];
+
+    if (priceMatches.length > 0) {
+      // First fuel price on page is Jet A
+      price = priceMatches[0][1];
+    }
 
     res.status(200).json({
       jetA: price
