@@ -3,7 +3,8 @@ export default async function handler(req, res) {
     const response = await fetch("https://airnav.com/airport/TJBQ/COPECA");
     const html = await response.text();
 
-    const match = html.match(/Jet A Full service.*?\$([0-9.]+)/i);
+    // Better pattern based on table structure
+    const match = html.match(/Jet A Full service[\s\S]*?\$([0-9]+\.[0-9]+)/i);
 
     const price = match ? match[1] : "N/A";
 
