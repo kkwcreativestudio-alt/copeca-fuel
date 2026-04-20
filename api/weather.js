@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const lon = -67.1294;
 
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
     );
 
     const data = await response.json();
@@ -16,7 +16,9 @@ export default async function handler(req, res) {
 
     res.status(200).json({
       temp: tempF,
-      wind: windMPH
+      wind: windMPH,
+      code: data.current_weather.weathercode,
+      daily: data.daily
     });
 
   } catch (error) {
