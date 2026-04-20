@@ -9,11 +9,14 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
+    const tempF = Math.round((data.current_weather.temperature * 9/5) + 32);
+    const windMPH = Math.round(data.current_weather.windspeed * 0.621371);
+
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     res.status(200).json({
-      temp: Math.round(data.current_weather.temperature),
-      wind: Math.round(data.current_weather.windspeed)
+      temp: tempF,
+      wind: windMPH
     });
 
   } catch (error) {
